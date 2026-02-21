@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Management</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      .form-box {
+        max-width: 400px;
+        margin: auto;
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      input {
+        width: 100%;
+        padding: 8px;
+        margin: 8px 0;
+      }
+
+      button {
+        padding: 8px 12px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .add-btn {
+        background: #28a745;
+        color: white;
+        width: 100%;
+      }
+
+      .student {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        padding: 10px;
+        margin: 10px auto;
+        max-width: 400px;
+        border-radius: 6px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .delete-btn {
+        background: #dc3545;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Student Management</h1>
+
+    <div class="form-box">
+      <input type="text" id="inputName" placeholder="Enter your name" />
+      <input type="number" id="inputAge" placeholder="Age" />
+      <input type="text" id="inputGrade" placeholder="Grade (A/B/C/D)" />
+      <button class="add-btn" onclick="getSubmit()">Add Student</button>
+    </div>
+
+    <div id="container"></div>
+
+    <script>
+      let students = [];
+
+      function getSubmit() {
+        let name = document.getElementById("inputName").value;
+        let age = document.getElementById("inputAge").value;
+        let grade = document.getElementById("inputGrade").value;
+
+        if (!name || !age || !grade) {
+          alert("Please fill all fields");
+          return;
+        }
+
+        let student = {
+          id: Date.now(),
+          name,
+          age,
+          grade,
+        };
+
+        students.push(student);
+        display(students);
+
+        document.getElementById("inputName").value = "";
+        document.getElementById("inputAge").value = "";
+        document.getElementById("inputGrade").value = "";
+      }
+
+      function display(list) {
+        let container = document.getElementById("container");
+        container.innerHTML = "";
+
+        list.forEach((std) => {
+          let div = document.createElement("div");
+          div.className = "student";
+
+          div.innerHTML = `
+            <span>
+              <strong>${std.name}</strong> | Age: ${std.age} | Grade: ${std.grade}
+            </span>
+            <button class="delete-btn" onclick="deleteStudent(${std.id})">Delete</button>
+          `;
+
+          container.appendChild(div);
+        });
+      }
+
+      function deleteStudent(id) {
+        students = students.filter((std) => std.id !== id);
+        display(students);
+      }
+    </script>
+  </body>
+</html>
